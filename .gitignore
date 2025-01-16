@@ -11,7 +11,7 @@ logs/
 data/
 
 # Pretrained model directories
-DNABERT/
+dnabert/
 
 # Generated output or result files
 outputs/
