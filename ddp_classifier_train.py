@@ -64,7 +64,9 @@ def setup_DDP_mp(init_method, local_rank, rank, world_size, logger, backend="ncc
     )
     device = torch.device("cuda:{}".format(local_rank))
     if verbose:
-        logger.info(f"Using device: {device}")
+        file_name = os.path.basename(__file__) 
+        logger.info(f"[Initialization] File: {file_name}")
+        logger.info(f"[Initialization] Using device: {device}")
         logger.info(f"[Initialization] Local Rank: {local_rank} | Global Rank: {rank} | World Size: {world_size}")
     return device
 

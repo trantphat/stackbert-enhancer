@@ -65,7 +65,9 @@ def setup_DDP_mp(init_method, local_rank, rank, world_size, logger, backend="ncc
     )
     device = torch.device("cuda:{}".format(local_rank))
     if verbose:
-        logger.info(f"Using device: {device}")
+        file_name = os.path.basename(__file__) 
+        logger.info(f"[Initialization] File: {file_name}")
+        logger.info(f"[Initialization] Using device: {device}")
         logger.info(f"[Initialization] Local Rank: {local_rank} | Global Rank: {rank} | World Size: {world_size}")
     return device
 
@@ -176,12 +178,11 @@ def main(local_rank, ngpus_per_node, args):
 
     # Parameters setup
     learning_rates = [5e-5]
-    lambdas = [
-        # 1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3,
-        # 1e-4, 2e-4, 3e-4, 4e-4, 5e-4, 6e-4, 7e-4, 8e-4, 9e-4,
-        # 1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5
-        7e-4
-    ]
+    lambdas =   [
+                    1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3,
+                    1e-4, 2e-4, 3e-4, 4e-4, 5e-4, 6e-4, 7e-4, 8e-4, 9e-4,
+                    1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5 
+                ]
     k_targets = [3]
     seed = 1337  # Random seed
     results = []  # Results tracking
