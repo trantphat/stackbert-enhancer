@@ -1,0 +1,21 @@
+# Virtual environment files
+venv/
+
+# Python bytecode cache
+__pycache__/
+
+# Log files
+logs/
+
+# Temporary or intermediate data files
+data/
+
+# Pretrained model directories
+DNABERT/
+
+# Generated output or result files
+outputs/
+
+# Extra notes or miscellaneous
+notes/
+note.txt
