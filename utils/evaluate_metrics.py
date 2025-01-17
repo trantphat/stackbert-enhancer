@@ -3,13 +3,14 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, roc_auc_score
 
 
-def evaluate_metrics(logits, true_labels):
+def evaluate_metrics(logits, true_labels, threshold=0.50):
     """
     Evaluate performance metrics for binary classification.
 
     Args:
         logits (array-like): Predicted logits or probabilities from the model.
         true_labels (array-like): True labels corresponding to the input data.
+        threshold (float): Threshold value to classify predictions.
 
     Returns:
         tuple: A tuple containing the following metrics:
@@ -22,8 +23,6 @@ def evaluate_metrics(logits, true_labels):
     # Convert logits and labels to NumPy arrays for efficient processing
     logits = np.array(logits)
     true_labels = np.array(true_labels)
-
-    threshold = 0.55
 
     # Create predicted labels based on the threshold
     predicted_labels = [1 if logit > threshold else 0 for logit in logits]
