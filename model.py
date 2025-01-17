@@ -60,7 +60,7 @@ class BertCustomBinaryClassifier(BertPreTrainedModel):
             loss_function = nn.BCEWithLogitsLoss()
             loss = loss_function(logits.view(-1), flattened_labels)
 
-        # Return outputs as a tuple or dictionary based on `return_dict`
+        # Return outputs as a tuple or dictionary
         if not return_dict:
             output = (logits,) + bert_outputs[2:]
             return ((loss,) + output) if loss is not None else output
