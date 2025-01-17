@@ -158,7 +158,7 @@ def parse_args():
     parser.add_argument("--dist-url", default="tcp://127.0.0.1:12355", type=str, help="URL used to set up distributed training")
     parser.add_argument("--batch_size", type=int, default=64, help="Batch size for training")
     parser.add_argument("--node_rank", default=0, type=int, help="Node rank for distributed training")
-    parser.add_argument("--epochs", type=int, default=30, help="Number of epochs for training")
+    parser.add_argument("--epochs", type=int, default=70, help="Number of epochs for training")
     parser.add_argument("--max_length", type=int, default=200, help="Maximum sequence length for input data")
     parser.add_argument("--model_path", type=str, help="Path to the model directory")
     parser.add_argument("--test_data_path", type=str, help="Path to the test dataset file")
@@ -177,10 +177,10 @@ def main(local_rank, ngpus_per_node, args):
 
     # Parameters setup
     k_params = {
-        3: {"learning_rate": 5e-05, "lambda": 1e-4},
-        4: {"learning_rate": 5e-05, "lambda": 1e-4},
+        3: {"learning_rate": 5e-05, "lambda": 9e-4},
+        4: {"learning_rate": 5e-05, "lambda": 2e-4},
         5: {"learning_rate": 5e-05, "lambda": 1e-4},
-        6: {"learning_rate": 5e-05, "lambda": 1e-4},
+        6: {"learning_rate": 5e-05, "lambda": 5e-4},
     }
     seed = 1337  # Random seed
     results = []  # Results tracking
