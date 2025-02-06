@@ -15,6 +15,7 @@ dnabert/
 
 # Generated output or result files
 outputs/
+analysis/
 
 # Extra notes or miscellaneous
 notes/
