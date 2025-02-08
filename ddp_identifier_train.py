@@ -179,7 +179,7 @@ def main(local_rank, ngpus_per_node, args):
     k_params = {
         3: {"learning_rate": 5e-05, "lambda": 7e-4},
         4: {"learning_rate": 4e-05, "lambda": 1e-4},
-        5: {"learning_rate": 4e-05, "lambda": 3e-3},
+        5: {"learning_rate": 5e-05, "lambda": 2e-5},    # 5: {"learning_rate": 4e-05, "lambda": 3e-3},
         6: {"learning_rate": 4e-05, "lambda": 1e-5},
     }
     seed = 1337  # Random seed

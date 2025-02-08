@@ -268,7 +268,7 @@ def main(local_rank, ngpus_per_node, args):
     }
     seed = 1337  # Random seed
     results = []  # Results tracking
-    identifier_model_date = "2025-01-15"
+    identifier_model_date = "2025-02-07"
 
     for k_target, param_list in k_params.items():
         for params in param_list:
