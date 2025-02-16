@@ -177,14 +177,15 @@ def main(local_rank, ngpus_per_node, args):
 
     # Parameters setup
     k_params = {
-        3: {"learning_rate": 5e-05, "lambda": 9e-4},
-        4: {"learning_rate": 5e-05, "lambda": 4e-4},  # 4: {"learning_rate": 5e-05, "lambda": 2e-4},
-        5: {"learning_rate": 5e-05, "lambda": 1e-4},
-        6: {"learning_rate": 5e-05, "lambda": 5e-4},
+        3: {"learning_rate": 1e-04, "lambda": 8e-3},  # 80
+        4: {"learning_rate": 1e-04, "lambda": 2e-5},  # 100
+        5: {"learning_rate": 1e-04, "lambda": 8e-4},  # 100
+        6: {"learning_rate": 5e-05, "lambda": 5e-4},  # 70
     }
     seed = 1337  # Random seed
     results = []  # Results tracking
-    identifier_model_date = "2025-02-07"
+    identifier_model_date = "2025-02-11"
+    logger.info(f"Identifier model date set to: {identifier_model_date}")
 
     for k_target, params in k_params.items():
         learning_rate = params["learning_rate"]

@@ -159,7 +159,7 @@ def parse_args():
     parser.add_argument("--dist-url", default="tcp://127.0.0.1:12355", type=str, help="URL used to set up distributed training")
     parser.add_argument("--batch_size", type=int, default=64, help="Batch size for training")
     parser.add_argument("--node_rank", default=0, type=int, help="Node rank for distributed training")
-    parser.add_argument("--epochs", type=int, default=30, help="Number of epochs for training")
+    parser.add_argument("--epochs", type=int, default=100, help="Number of epochs for training")
     parser.add_argument("--max_length", type=int, default=200, help="Maximum sequence length for input data")
     parser.add_argument("--model_path", type=str, help="Path to the model directory")
     parser.add_argument("--test_data_path", type=str, help="Path to the test dataset file")
@@ -177,16 +177,17 @@ def main(local_rank, ngpus_per_node, args):
     device = setup_DDP_mp(init_method=args.dist_url, local_rank=args.local_rank, rank=args.rank, world_size=args.world_size, verbose=True, logger=logger)
 
     # Parameters setup
-    learning_rates = [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]
+    learning_rates = [1e-4, 2e-4, 3e-4, 4e-4, 5e-4]
     lambdas = [
         1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3,
         1e-4, 2e-4, 3e-4, 4e-4, 5e-4, 6e-4, 7e-4, 8e-4, 9e-4,
         1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5
     ]
-    k_targets = [5, 6]
+    k_targets = [3, 4, 5, 6]
     seed = 1337  # Random seed
     results = []  # Results tracking
-    identifier_model_date = "2025-01-15"
+    identifier_model_date = "2025-02-11"
+    logger.info(f"Identifier model date set to: {identifier_model_date}")
 
     for k_target in k_targets:
         for learning_rate, lambd in itertools.product(learning_rates, lambdas):
