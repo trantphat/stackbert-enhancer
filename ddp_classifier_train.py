@@ -177,14 +177,15 @@ def main(local_rank, ngpus_per_node, args):
 
     # Parameters setup
     k_params = {
-        3: {"learning_rate": 1e-04, "lambda": 8e-3},  # 80
-        4: {"learning_rate": 1e-04, "lambda": 2e-5},  # 100
+        3: {"learning_rate": 1e-04, "lambda": 8e-3},  # 69
+        4: {"learning_rate": 1e-04, "lambda": 2e-5},  # 92
         5: {"learning_rate": 1e-04, "lambda": 8e-4},  # 100
         6: {"learning_rate": 5e-05, "lambda": 5e-4},  # 70
     }
     seed = 1337  # Random seed
     results = []  # Results tracking
-    identifier_model_date = "2025-02-11"
+    identifier_model_date = "2025-02-27_V1"
+    logger.info(f"Model: {BertCustomBinaryClassifier.__name__}")
     logger.info(f"Identifier model date set to: {identifier_model_date}")
 
     for k_target, params in k_params.items():
@@ -198,7 +199,7 @@ def main(local_rank, ngpus_per_node, args):
         torch.backends.cudnn.deterministic = True
 
         # Log the current configuration of hyperparameters
-        logger.info("Starting training for %s-mer classifier with: batch size=%s | learning rate=%s | lambda=%s", k_target, args.batch_size, learning_rate, lambd)
+        logger.info("Starting training for %s-mer identifier with: batch size=%s | learning rate=%s | lambda=%s | epochs=%s", k_target, args.batch_size, learning_rate, lambd, args.epochs)
 
         # Define paths for model and data based on the current k-mer target
         args.model_path = os.path.join(".", "outputs", "identifier_models", f"{identifier_model_date}", f"{k_target}-mer")
@@ -225,6 +226,8 @@ def main(local_rank, ngpus_per_node, args):
         # Set up optimizer and learning rate scheduler
         optimizer = optim.Adam(model.parameters(), lr=learning_rate)
         scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.98)
+
+        best_results = []
 
         for epoch in range(args.epochs):
             # Ensure proper shuffling by setting the epoch for distributed samplers
@@ -267,8 +270,40 @@ def main(local_rank, ngpus_per_node, args):
             # Update the learning rate scheduler after each epoch
             scheduler.step()
 
+            # Check if the current result is the best so far
+            if not best_results or test_accuracy > float(best_results[0]["test_accuracy"]):
+                best_results = [
+                    {
+                        "epoch": epoch + 1,
+                        "k-mer": f"{k_target}-mer",
+                        "learning_rate": f"{learning_rate}",
+                        "lambda": f"{lambd}",
+                        "train_accuracy": f"{train_accuracy:.4f}",
+                        "test_accuracy": f"{test_accuracy:.4f}",
+                        "sn": f"{test_sn:.4f}",
+                        "sp": f"{test_sp:.4f}",
+                        "mcc": f"{test_mcc:.4f}",
+                        "auc": f"{test_auc:.4f}",
+                    }
+                ]
+            elif test_accuracy == float(best_results[0]["test_accuracy"]):
+                best_results.append(
+                    {
+                        "epoch": epoch + 1,
+                        "k-mer": f"{k_target}-mer",
+                        "learning_rate": f"{learning_rate}",
+                        "lambda": f"{lambd}",
+                        "train_accuracy": f"{train_accuracy:.4f}",
+                        "test_accuracy": f"{test_accuracy:.4f}",
+                        "sn": f"{test_sn:.4f}",
+                        "sp": f"{test_sp:.4f}",
+                        "mcc": f"{test_mcc:.4f}",
+                        "auc": f"{test_auc:.4f}",
+                    }
+                )
+
             # Log metrics every 10 epochs if this is the main process (rank 0)
-            if dist.get_rank() == 0 and (epoch + 1) % 10 == 0:
+            if dist.get_rank() == 0 and ((epoch + 1) % 10 == 0 or (epoch + 1) == args.epochs):
                 epoch_end_time = time.time()  # Record end time for the epoch
                 logger.info(
                     f"Train Accuracy={train_accuracy:.4f}, "
@@ -295,6 +330,19 @@ def main(local_rank, ngpus_per_node, args):
             }
         )
 
+        # Display the best results after training
+        if best_results:
+            for result in best_results:
+                logger.info(
+                    f"Best result at epoch {result['epoch']}: "
+                    f"Train Accuracy={result['train_accuracy']}, "
+                    f"Test Accuracy={result['test_accuracy']}, "
+                    f"Sn={result['sn']}, "
+                    f"Sp={result['sp']}, "
+                    f"MCC={result['mcc']}, "
+                    f"AUC={result['auc']}"
+                )
+
         # Save the model if enabled and on the main process only
         if args.save_model and dist.get_rank() == 0:  # Save on the main process only
             # Generate directory name based on the current date
@@ -317,6 +365,20 @@ def main(local_rank, ngpus_per_node, args):
             model.module.save_pretrained(model_save_path)
             tokenizer.save_pretrained(model_save_path)
             logger.info(f"{k_target}-mer classifier model saved to {model_save_path}")
+
+            # Save additional information to a text file
+            info_save_path = os.path.join(model_save_path, f"{model_filename}_info.txt")
+            with open(info_save_path, "w") as f:
+                f.write(f"epochs: {args.epochs}\n")
+                f.write(f"learning_rate: {learning_rate}\n")
+                f.write(f"lambda: {lambd}\n")
+                f.write(f"k-mer: {k_target}-mer\n")
+                f.write(f"train_accuracy: {train_accuracy:.4f}\n")
+                f.write(f"test_accuracy: {test_accuracy:.4f}\n")
+                f.write(f"sn: {test_sn:.4f}\n")
+                f.write(f"sp: {test_sp:.4f}\n")
+                f.write(f"mcc: {test_mcc:.4f}\n")
+                f.write(f"auc: {test_auc:.4f}\n")
 
     # Save the results to a CSV file
     current_date = datetime.now().strftime("%Y-%m-%d")

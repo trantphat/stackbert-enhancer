@@ -179,96 +179,11 @@ def main(local_rank, ngpus_per_node, args):
     k_params = {
         3: [
             {"learning_rate": 0.0001, "lambda": 0.006},
-            {"learning_rate": 0.0001, "lambda": 0.002},
-            {"learning_rate": 0.0001, "lambda": 0.007},
-            {"learning_rate": 0.0001, "lambda": 0.0003},
-            {"learning_rate": 0.0001, "lambda": 4e-05},
-            {"learning_rate": 0.0001, "lambda": 0.005},
-            {"learning_rate": 0.0001, "lambda": 2e-05},
-            {"learning_rate": 0.0001, "lambda": 0.0002},
-            {"learning_rate": 0.0001, "lambda": 0.0005},
-            {"learning_rate": 0.0001, "lambda": 0.0001},
-            {"learning_rate": 0.0001, "lambda": 0.0007},
-            {"learning_rate": 0.0001, "lambda": 0.0009},
-            {"learning_rate": 0.0001, "lambda": 0.008},
-            {"learning_rate": 0.0001, "lambda": 0.0006},
-            {"learning_rate": 0.0001, "lambda": 0.0008},
-            {"learning_rate": 0.0001, "lambda": 0.009},
-            {"learning_rate": 0.0001, "lambda": 5e-05},
-            {"learning_rate": 0.0001, "lambda": 9e-05},
-            {"learning_rate": 0.0001, "lambda": 6e-05},
-            {"learning_rate": 0.0001, "lambda": 0.003},
-        ],
-        4: [
-            {"learning_rate": 0.0001, "lambda": 0.006},
-            {"learning_rate": 0.0001, "lambda": 0.002},
-            {"learning_rate": 0.0001, "lambda": 0.007},
-            {"learning_rate": 0.0001, "lambda": 0.0003},
-            {"learning_rate": 0.0001, "lambda": 4e-05},
-            {"learning_rate": 0.0001, "lambda": 0.005},
-            {"learning_rate": 0.0001, "lambda": 2e-05},
-            {"learning_rate": 0.0001, "lambda": 0.0002},
-            {"learning_rate": 0.0001, "lambda": 0.0005},
-            {"learning_rate": 0.0001, "lambda": 0.0001},
-            {"learning_rate": 0.0001, "lambda": 0.0007},
-            {"learning_rate": 0.0001, "lambda": 0.0009},
-            {"learning_rate": 0.0001, "lambda": 0.008},
-            {"learning_rate": 0.0001, "lambda": 0.0006},
-            {"learning_rate": 0.0001, "lambda": 0.0008},
-            {"learning_rate": 0.0001, "lambda": 0.009},
-            {"learning_rate": 0.0001, "lambda": 5e-05},
-            {"learning_rate": 0.0001, "lambda": 9e-05},
-            {"learning_rate": 0.0001, "lambda": 6e-05},
-            {"learning_rate": 0.0001, "lambda": 0.003},
-        ],
-        5: [
-            {"learning_rate": 0.0001, "lambda": 0.003},
-            {"learning_rate": 0.0001, "lambda": 0.0007},
-            {"learning_rate": 0.0001, "lambda": 0.005},
-            {"learning_rate": 0.0001, "lambda": 6e-05},
-            {"learning_rate": 0.0001, "lambda": 0.001},
-            {"learning_rate": 0.0001, "lambda": 0.0004},
-            {"learning_rate": 0.0001, "lambda": 8e-05},
-            {"learning_rate": 0.0001, "lambda": 4e-05},
-            {"learning_rate": 0.0001, "lambda": 5e-05},
-            {"learning_rate": 0.0001, "lambda": 0.0005},
-            {"learning_rate": 0.0001, "lambda": 7e-05},
-            {"learning_rate": 0.0001, "lambda": 0.006},
-            {"learning_rate": 0.0001, "lambda": 0.009},
-            {"learning_rate": 0.0001, "lambda": 0.007},
-            {"learning_rate": 0.0001, "lambda": 0.0006},
-            {"learning_rate": 0.0001, "lambda": 0.0008},
-            {"learning_rate": 0.0001, "lambda": 3e-05},
-            {"learning_rate": 0.0001, "lambda": 0.0002},
-            {"learning_rate": 0.0001, "lambda": 2e-05},
-            {"learning_rate": 0.0001, "lambda": 1e-05},
-        ],
-        6: [
-            {"learning_rate": 5e-05, "lambda": 0.0005},
-            {"learning_rate": 5e-05, "lambda": 0.0002},
-            {"learning_rate": 3e-05, "lambda": 0.0005},
-            {"learning_rate": 5e-05, "lambda": 7e-05},
-            {"learning_rate": 5e-05, "lambda": 4e-05},
-            {"learning_rate": 5e-05, "lambda": 0.0004},
-            {"learning_rate": 5e-05, "lambda": 1e-05},
-            {"learning_rate": 5e-05, "lambda": 0.002},
-            {"learning_rate": 4e-05, "lambda": 0.0002},
-            {"learning_rate": 3e-05, "lambda": 0.002},
-            {"learning_rate": 2e-05, "lambda": 9e-05},
-            {"learning_rate": 5e-05, "lambda": 0.003},
-            {"learning_rate": 3e-05, "lambda": 0.0009},
-            {"learning_rate": 4e-05, "lambda": 7e-05},
-            {"learning_rate": 4e-05, "lambda": 0.009},
-            {"learning_rate": 4e-05, "lambda": 0.008},
-            {"learning_rate": 3e-05, "lambda": 0.0008},
-            {"learning_rate": 4e-05, "lambda": 0.002},
-            {"learning_rate": 4e-05, "lambda": 0.0003},
-            {"learning_rate": 2e-05, "lambda": 5e-05},
-        ],
+        ]
     }
     seed = 1337  # Random seed
     results = []  # Results tracking
-    identifier_model_date = "2025-02-11"
+    identifier_model_date = "2025-02-18"
     logger.info(f"Identifier model date set to: {identifier_model_date}")
 
     for k_target, param_list in k_params.items():
@@ -283,7 +198,7 @@ def main(local_rank, ngpus_per_node, args):
             torch.backends.cudnn.deterministic = True
 
             # Log the current configuration of hyperparameters
-            logger.info("Starting training for %s-mer classifier with: batch size=%s | learning rate=%s | lambda=%s", k_target, args.batch_size, learning_rate, lambd)
+            logger.info("Starting training for %s-mer identifier with: batch size=%s | learning rate=%s | lambda=%s | epochs=%s", k_target, args.batch_size, learning_rate, lambd, args.epochs)
 
             # Define paths for model and data based on the current k-mer target
             args.model_path = os.path.join(".", "outputs", "identifier_models", f"{identifier_model_date}", f"{k_target}-mer")
@@ -311,6 +226,8 @@ def main(local_rank, ngpus_per_node, args):
             optimizer = optim.Adam(model.parameters(), lr=learning_rate)
             scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.98)
 
+            best_results = []
+            
             for epoch in range(args.epochs):
                 # Ensure proper shuffling by setting the epoch for distributed samplers
                 train_dataloader.sampler.set_epoch(epoch)
@@ -352,6 +269,37 @@ def main(local_rank, ngpus_per_node, args):
                 # Update the learning rate scheduler after each epoch
                 scheduler.step()
 
+                # Check if the current result is the best so far
+                if not best_results or test_accuracy > float(best_results[0]["test_accuracy"]):
+                    best_results = [
+                        {
+                            "epoch": epoch + 1,
+                            "k-mer": f"{k_target}-mer",
+                            "learning_rate": f"{learning_rate}",
+                            "lambda": f"{lambd}",
+                            "train_accuracy": f"{train_accuracy:.4f}",
+                            "test_accuracy": f"{test_accuracy:.4f}",
+                            "sn": f"{test_sn:.4f}",
+                            "sp": f"{test_sp:.4f}",
+                            "mcc": f"{test_mcc:.4f}",
+                            "auc": f"{test_auc:.4f}",
+                        }
+                    ]
+                elif test_accuracy == float(best_results[0]["test_accuracy"]):
+                    best_results.append(
+                        {
+                            "epoch": epoch + 1,
+                            "k-mer": f"{k_target}-mer",
+                            "learning_rate": f"{learning_rate}",
+                            "lambda": f"{lambd}",
+                            "train_accuracy": f"{train_accuracy:.4f}",
+                            "test_accuracy": f"{test_accuracy:.4f}",
+                            "sn": f"{test_sn:.4f}",
+                            "sp": f"{test_sp:.4f}",
+                            "mcc": f"{test_mcc:.4f}",
+                            "auc": f"{test_auc:.4f}",
+                        }
+                    )
                 # Log metrics every 10 epochs if this is the main process (rank 0)
                 if dist.get_rank() == 0 and (epoch + 1) % 10 == 0:
                     epoch_end_time = time.time()  # Record end time for the epoch
@@ -379,6 +327,19 @@ def main(local_rank, ngpus_per_node, args):
                     "auc": f"{test_auc:.4f}",
                 }
             )
+
+            # Display the best results after training
+            if best_results:
+                for result in best_results:
+                    logger.info(
+                        f"Best result at epoch {result['epoch']}: "
+                        f"Train Accuracy={result['train_accuracy']}, "
+                        f"Test Accuracy={result['test_accuracy']}, "
+                        f"Sn={result['sn']}, "
+                        f"Sp={result['sp']}, "
+                        f"MCC={result['mcc']}, "
+                        f"AUC={result['auc']}"
+                    )
 
             # Save the model if enabled and on the main process only
             if args.save_model and dist.get_rank() == 0:  # Save on the main process only
