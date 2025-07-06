@@ -1,0 +1,2 @@
+k-mer,learning_rate,lambda,train_accuracy,test_accuracy,sn,sp,mcc,auc
+3-mer,0.0001,2e-05,0.8824,0.7775,0.6700,0.8850,0.5683,0.8125
