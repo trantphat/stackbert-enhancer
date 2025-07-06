@@ -1,24 +1,29 @@
-# Virtual environment files
+# Environment & Cache
 venv/
-
-# Python bytecode cache
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
 
-# Log files
+# Logs & Local Files
 logs/
-
-# Pretrained model directories
-dnabert/
-
-# Generated output or result files
-outputs/
-
-# Extra notes or miscellaneous
-notes/
-note.txt
 output.log
 local_dev.py
+notes/
+note.txt
+
+# Data & Models
+dnabert/
 analysis/attention/
 analysis/*/*.bw
 analysis/*/*.bed
 analysis/*/*.bigBed
+
+# Outputs & Results
+# Ignore all outputs, then add exceptions
+outputs/*
+!outputs/npy/
+!outputs/*.zip
+!outputs/results/
+outputs/results/*/
+!outputs/results/2025-02-27/
