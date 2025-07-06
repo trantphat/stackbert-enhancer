@@ -227,7 +227,7 @@ def main(local_rank, ngpus_per_node, args):
             scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.98)
 
             best_results = []
-            # total_time = 0
+            total_time = 0
 
             for epoch in range(args.epochs):
                 # Ensure proper shuffling by setting the epoch for distributed samplers
@@ -303,10 +303,10 @@ def main(local_rank, ngpus_per_node, args):
                     )
 
                 # Log metrics every 10 epochs if this is the main process (rank 0)
-                if dist.get_rank() == 0 and (epoch + 1) % 10 == 0:
+                if dist.get_rank() == 0 and (epoch + 1) % 1 == 0:
                     epoch_end_time = time.time()  # Record end time for the epoch
-                    # epoch_duration = epoch_end_time - epoch_start_time
-                    # total_time += epoch_duration
+                    epoch_duration = epoch_end_time - epoch_start_time
+                    total_time += epoch_duration
                     logger.info(
                         f"Train Accuracy={train_accuracy:.4f}, "
                         f"Test Accuracy={test_accuracy:.4f}, "
@@ -333,8 +333,8 @@ def main(local_rank, ngpus_per_node, args):
             )
 
             # Calculate the average time per epoch
-            # avg_time_per_epoch = total_time / args.epochs
-            # logger.info(f"Epochs: {args.epochs}, Total: {total_time:.4f}s, Avg/Epoch: {avg_time_per_epoch:.4f}s")
+            avg_time_per_epoch = total_time / args.epochs
+            logger.info(f"Epochs: {args.epochs}, Total: {total_time:.4f}s, Avg/Epoch: {avg_time_per_epoch:.4f}s")
 
             # Display the best results after training
             if best_results:
