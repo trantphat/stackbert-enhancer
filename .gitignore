@@ -7,9 +7,6 @@ __pycache__/
 # Log files
 logs/
 
-# Temporary or intermediate data files
-data/
-
 # Pretrained model directories
 dnabert/
 
