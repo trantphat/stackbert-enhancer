@@ -12,10 +12,13 @@ dnabert/
 
 # Generated output or result files
 outputs/
-analysis/
 
 # Extra notes or miscellaneous
 notes/
 note.txt
 output.log
 local_dev.py
+analysis/attention/
+analysis/*/*.bw
+analysis/*/*.bed
+analysis/*/*.bigBed
